@@ -471,13 +471,6 @@ The CI automatically handles version bumping:
 - **Skip publishing**: Use `[skip-publish]` in commit message to skip npm publishing
 - **New versions**: If package.json version doesn't exist on npm, publishes as-is
 
-### NPM Publishing Setup
-
-To set up automated npm publishing, you need to:
-
-1. Create an npm token with publish permissions for `@nurv-llc` organization
-2. Add the token as `NPM_TOKEN` in GitHub repository secrets
-
 ## Contributing
 
 Contributions are welcome! Please read our contributing guidelines and submit pull requests to our GitHub repository.
