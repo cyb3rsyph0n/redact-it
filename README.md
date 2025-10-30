@@ -37,6 +37,43 @@ console.log(redacted);
 // }
 ```
 
+### More Examples
+
+```typescript
+// Example with various PII types
+const sensitiveData = {
+  name: 'Jane Smith',
+  email: 'jane@company.com',
+  creditCard: '4111-1111-1111-1111',
+  driverLicense: 'DL123456789',
+  dateOfBirth: '1990-01-15',
+  passport: 'US123456789',
+  apiKey: 'sk_live_abc123xyz',
+  ipAddress: '192.168.1.100',
+  bankAccount: '12345678901',
+  taxId: '12-3456789',
+  medicalRecord: 'MRN987654321',
+  nationalId: 'SSN123-45-6789'
+};
+
+const redacted = redactIt(sensitiveData);
+console.log(redacted);
+// Output: {
+//   name: 'Jane Smith',
+//   email: '[REDACTED]',
+//   creditCard: '[REDACTED]',
+//   driverLicense: '[REDACTED]',
+//   dateOfBirth: '[REDACTED]',
+//   passport: '[REDACTED]',
+//   apiKey: '[REDACTED]',
+//   ipAddress: '[REDACTED]',
+//   bankAccount: '[REDACTED]',
+//   taxId: '[REDACTED]',
+//   medicalRecord: '[REDACTED]',
+//   nationalId: '[REDACTED]'
+// }
+```
+
 ## How It Works
 
 `redact-it` searches for **property names** (keys) that match sensitive data patterns and replaces their **values** with redaction text. By default, it looks for properties that indicate:
@@ -44,6 +81,16 @@ console.log(redacted);
 - **Email addresses**: `email`, `emailAddress`, `userEmail`, etc.
 - **Phone numbers**: `phone`, `phoneNumber`, `mobile`, `cellPhone`, etc.
 - **Social Security Numbers**: `ssn`, `socialSecurityNumber`, `socialSecurity`, etc.
+- **Credit Card Information**: `creditCard`, `cardNumber`, `ccNumber`, etc.
+- **Driver's License**: `driverLicense`, `licenseNumber`, `dlNumber`, etc.
+- **Passport Information**: `passport`, `passportNumber`, `passportId`, etc.
+- **IP Addresses**: `ipAddress`, `clientIp`, `remoteIp`, etc.
+- **Passwords & Secrets**: `password`, `token`, `apiKey`, `secret`, etc.
+- **Bank Account Info**: `accountNumber`, `bankAccount`, `routingNumber`, etc.
+- **Date of Birth**: `dateOfBirth`, `birthDate`, `dob`, etc.
+- **Tax IDs**: `taxId`, `ein`, `taxpayerId`, etc.
+- **Medical Records**: `medicalRecord`, `mrn`, `patientId`, etc.
+- **National IDs**: `nationalId`, `citizenId`, `personalId`, etc.
 
 ## API Reference
 
@@ -302,13 +349,25 @@ redactIt(data, {
 
 ## Default Filters
 
-The library includes three built-in filters:
+The library includes thirteen built-in filters for common PII types:
 
-| Filter  | Pattern          | Matches                                                    |
-| ------- | ---------------- | ---------------------------------------------------------- | ---------------------- | ------------------------------------------------------ | ------------------------------------------------- |
-| `email` | `/^.*email.*$/i` | `email`, `emailAddress`, `userEmail`, `contactEmail`, etc. |
-| `phone` | `/^.\*(phone\\   | mobile\\                                                   | cell\\                 | telephone).\*$/i`                                      | `phone`, `mobile`, `cellPhone`, `telephone`, etc. |
-| `ssn`   | `/^.\*(ssn\\     | social.\*security\\                                        | socialsecurity).\*$/i` | `ssn`, `socialSecurityNumber`, `social_security`, etc. |
+| Filter           | Pattern Examples                                           | Matches                                                                              |
+| ---------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `email`          | `/^.*email.*$/i`                                           | `email`, `emailAddress`, `userEmail`, `contactEmail`, etc.                          |
+| `phone`          | `/^.*(phone\|mobile\|cell\|telephone).*$/i`                | `phone`, `mobile`, `cellPhone`, `telephone`, etc.                                   |
+| `ssn`            | `/^.*(ssn\|social.*security\|socialsecurity).*$/i`        | `ssn`, `socialSecurityNumber`, `social_security`, etc.                              |
+| `creditCard`     | `/^.*(credit.*card\|card.*number\|cc.*number).*$/i`       | `creditCard`, `cardNumber`, `ccNumber`, `paymentCard`, etc.                         |
+| `driverLicense`  | `/^.*(driver.*license\|license.*number\|dl.*number).*$/i` | `driverLicense`, `licenseNumber`, `dlNumber`, `drivingLicense`, etc.                |
+| `passport`       | `/^.*(passport\|passport.*number\|passport.*id).*$/i`     | `passport`, `passportNumber`, `passportId`, etc.                                    |
+| `ipAddress`      | `/^.*(ip.*address\|client.*ip\|remote.*ip\|user.*ip).*$/i`| `ipAddress`, `clientIp`, `remoteIp`, `userIp`, `ip`, etc.                           |
+| `password`       | `/^.*(password\|passwd\|pwd\|token\|secret).*$/i`         | `password`, `token`, `apiKey`, `secret`, `authToken`, `accessToken`, etc.           |
+| `bankAccount`    | `/^.*(account.*number\|bank.*account\|routing.*number).*$/i`| `accountNumber`, `bankAccount`, `routingNumber`, `iban`, etc.                       |
+| `dateOfBirth`    | `/^.*(date.*of.*birth\|birth.*date\|dob\|birthday).*$/i`  | `dateOfBirth`, `birthDate`, `dob`, `birthday`, etc.                                 |
+| `taxId`          | `/^.*(tax.*id\|ein\|taxpayer.*id\|federal.*id).*$/i`      | `taxId`, `ein`, `taxpayerId`, `federalId`, `taxNumber`, etc.                        |
+| `medicalRecord`  | `/^.*(medical.*record\|mrn\|patient.*id\|health.*id).*$/i`| `medicalRecord`, `mrn`, `patientId`, `healthId`, `medicalNumber`, etc.              |
+| `nationalId`     | `/^.*(national.*id\|citizen.*id\|personal.*id).*$/i`      | `nationalId`, `citizenId`, `personalId`, `governmentId`, `identityNumber`, etc.     |
+
+All filters are case-insensitive and match property names containing the specified patterns.
 
 ## TypeScript Support
 

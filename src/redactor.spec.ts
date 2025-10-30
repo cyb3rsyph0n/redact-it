@@ -247,14 +247,14 @@ describe('redactIt', () => {
       const input = {
         email: 'user@example.com',
         phone: '555-0123',
-        password: 'secret123',
-        apiKey: 'abc123',
+        customField: 'secret123',
+        internalData: 'abc123',
       };
 
       const options: RedactOptions = {
         additionalFilters: [
-          { search: 'password', replace: '[HIDDEN]' },
-          { search: /.*key.*$/i, replace: '[SECRET]' },
+          { search: 'customField', replace: '[HIDDEN]' },
+          { search: /.*internal.*$/i, replace: '[SECRET]' },
         ],
       };
 
@@ -263,21 +263,21 @@ describe('redactIt', () => {
       expect(result).toEqual({
         email: '[REDACTED]', // From default filters
         phone: '[REDACTED]', // From default filters
-        password: '[HIDDEN]', // From additional filters
-        apiKey: '[SECRET]', // From additional filters
+        customField: '[HIDDEN]', // From additional filters
+        internalData: '[SECRET]', // From additional filters
       });
     });
 
     it('should support string references to default filters in additionalFilters', () => {
       const input = {
         email: 'user@example.com',
-        password: 'secret123',
+        customField: 'secret123',
       };
 
       const options: RedactOptions = {
         additionalFilters: [
           'email', // This will be ignored since email is already in defaults
-          { search: 'password', replace: '[HIDDEN]' },
+          { search: 'customField', replace: '[HIDDEN]' },
         ],
       };
 
@@ -285,7 +285,7 @@ describe('redactIt', () => {
 
       expect(result).toEqual({
         email: '[REDACTED]',
-        password: '[HIDDEN]',
+        customField: '[HIDDEN]',
       });
     });
   });
