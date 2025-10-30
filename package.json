@@ -1,6 +1,6 @@
 {
   "name": "@nurv-llc/redact-it",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A TypeScript library for redacting sensitive information from objects by matching property names",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
