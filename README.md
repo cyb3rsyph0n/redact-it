@@ -447,30 +447,6 @@ npm run format:check   # Check code formatting
 npm run type-check     # Run TypeScript compiler check
 ```
 
-### CI/CD Pipeline
-
-This project uses GitHub Actions for continuous integration and deployment:
-
-- **CI Workflow**: Runs on every push and PR to master/main branches
-  - Tests on Node.js 18.x, 20.x, and 22.x
-  - Runs tests, builds, and optional linting
-  - Uploads coverage to Codecov
-
-- **Publish Job**: Runs automatically on pushes to master branch
-  - Auto-detects if version needs bumping by checking npm registry
-  - Supports manual version control via commit message tags: `[major]`, `[minor]`, or auto-patches
-  - Publishes to npm automatically after successful tests
-  - Can be skipped with `[skip-publish]` in commit message
-
-### Version Bumping
-
-The CI automatically handles version bumping:
-
-- **Auto-patch**: Default behavior when version already exists on npm
-- **Manual control**: Use `[major]` or `[minor]` in commit message for specific bump types
-- **Skip publishing**: Use `[skip-publish]` in commit message to skip npm publishing
-- **New versions**: If package.json version doesn't exist on npm, publishes as-is
-
 ## Contributing
 
 Contributions are welcome! Please read our contributing guidelines and submit pull requests to our GitHub repository.
