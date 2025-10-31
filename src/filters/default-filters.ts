@@ -56,6 +56,18 @@ export const DEFAULT_FILTERS: Record<DefaultFilterName, FilterConfig> = {
     search: /^.*(national.*id|citizen.*id|personal.*id|government.*id|identity.*number).*$/i,
     replace: '[REDACTED]',
   },
+  deviceId: {
+    search: /^.*(device.*id|device.*identifier|device.*token|imei|android.*id|udid|uuid|hardware.*id|device.*fingerprint).*$/i,
+    replace: '[REDACTED]',
+  },
+  macAddress: {
+    search: /^.*(mac.*address|device.*mac|wifi.*mac|ethernet.*mac|bluetooth.*mac).*$/i,
+    replace: '[REDACTED]',
+  },
+  biometric: {
+    search: /^.*(biometric|fingerprint|face.*id|facial.*id|iris.*scan|retina.*scan|voice.*print|dna|palm.*scan).*$/i,
+    replace: '[REDACTED]',
+  },
 };
 
 /**

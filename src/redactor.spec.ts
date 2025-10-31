@@ -57,6 +57,24 @@ describe('redactIt', () => {
       expect(redactIt({})).toEqual({});
       expect(redactIt([])).toEqual([]);
     });
+
+    it('should redact device and biometric identifiers by default', () => {
+      const input = {
+        deviceId: '12345-DEVICE',
+        wifiMac: 'AA:BB:CC:DD:EE:FF',
+        fingerprintData: 'binary-data',
+        name: 'Sample',
+      };
+
+      const result = redactIt(input);
+
+      expect(result).toEqual({
+        deviceId: '[REDACTED]',
+        wifiMac: '[REDACTED]',
+        fingerprintData: '[REDACTED]',
+        name: 'Sample',
+      });
+    });
   });
 
   describe('deepScan option', () => {

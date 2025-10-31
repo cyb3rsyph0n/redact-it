@@ -43,7 +43,10 @@ export type DefaultFilterName =
   | 'dateOfBirth'
   | 'taxId'
   | 'medicalRecord'
-  | 'nationalId';
+  | 'nationalId'
+  | 'deviceId'
+  | 'macAddress'
+  | 'biometric';
 
 /**
  * Internal representation of a compiled filter

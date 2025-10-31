@@ -10,7 +10,7 @@ describe('Default Filters', () => {
     it('should return an array of default filter configurations', () => {
       const filters = getDefaultFilters();
       expect(Array.isArray(filters)).toBe(true);
-      expect(filters).toHaveLength(13);
+      expect(filters).toHaveLength(16);
 
       // Check that all filters have the required properties
       filters.forEach(filter => {
@@ -100,6 +100,24 @@ describe('Default Filters', () => {
       expect(nationalIdFilter.replace).toBe('[REDACTED]');
     });
 
+    it('should return deviceId filter configuration', () => {
+      const deviceIdFilter = getDefaultFilter('deviceId');
+      expect(deviceIdFilter.search).toBeInstanceOf(RegExp);
+      expect(deviceIdFilter.replace).toBe('[REDACTED]');
+    });
+
+    it('should return macAddress filter configuration', () => {
+      const macAddressFilter = getDefaultFilter('macAddress');
+      expect(macAddressFilter.search).toBeInstanceOf(RegExp);
+      expect(macAddressFilter.replace).toBe('[REDACTED]');
+    });
+
+    it('should return biometric filter configuration', () => {
+      const biometricFilter = getDefaultFilter('biometric');
+      expect(biometricFilter.search).toBeInstanceOf(RegExp);
+      expect(biometricFilter.replace).toBe('[REDACTED]');
+    });
+
     it('should throw error for unknown filter name', () => {
       expect(() => {
         // @ts-expect-error - testing invalid input
@@ -123,6 +141,9 @@ describe('Default Filters', () => {
       expect(isDefaultFilterName('taxId')).toBe(true);
       expect(isDefaultFilterName('medicalRecord')).toBe(true);
       expect(isDefaultFilterName('nationalId')).toBe(true);
+      expect(isDefaultFilterName('deviceId')).toBe(true);
+      expect(isDefaultFilterName('macAddress')).toBe(true);
+      expect(isDefaultFilterName('biometric')).toBe(true);
     });
 
     it('should return false for invalid filter names', () => {
@@ -464,6 +485,81 @@ describe('Default Filters', () => {
         expect(nationalIdPattern.test('email')).toBe(false);
         expect(nationalIdPattern.test('name')).toBe(false);
         expect(nationalIdPattern.test('address')).toBe(false);
+      });
+    });
+
+    describe('deviceId filter', () => {
+      const deviceIdPattern = DEFAULT_FILTERS.deviceId.search as RegExp;
+
+      it('should match various device identifier property names', () => {
+        expect(deviceIdPattern.test('deviceId')).toBe(true);
+        expect(deviceIdPattern.test('deviceIdentifier')).toBe(true);
+        expect(deviceIdPattern.test('deviceToken')).toBe(true);
+        expect(deviceIdPattern.test('imei')).toBe(true);
+        expect(deviceIdPattern.test('androidId')).toBe(true);
+        expect(deviceIdPattern.test('deviceFingerprint')).toBe(true);
+      });
+
+      it('should be case insensitive', () => {
+        expect(deviceIdPattern.test('DEVICEID')).toBe(true);
+        expect(deviceIdPattern.test('DeviceToken')).toBe(true);
+        expect(deviceIdPattern.test('ANDROIDID')).toBe(true);
+      });
+
+      it('should not match non-device identifier properties', () => {
+        expect(deviceIdPattern.test('email')).toBe(false);
+        expect(deviceIdPattern.test('password')).toBe(false);
+        expect(deviceIdPattern.test('address')).toBe(false);
+      });
+    });
+
+    describe('macAddress filter', () => {
+      const macAddressPattern = DEFAULT_FILTERS.macAddress.search as RegExp;
+
+      it('should match various MAC address property names', () => {
+        expect(macAddressPattern.test('macAddress')).toBe(true);
+        expect(macAddressPattern.test('deviceMacAddress')).toBe(true);
+        expect(macAddressPattern.test('wifiMac')).toBe(true);
+        expect(macAddressPattern.test('ethernetMac')).toBe(true);
+        expect(macAddressPattern.test('bluetoothMac')).toBe(true);
+      });
+
+      it('should be case insensitive', () => {
+        expect(macAddressPattern.test('MACADDRESS')).toBe(true);
+        expect(macAddressPattern.test('WifiMac')).toBe(true);
+        expect(macAddressPattern.test('BLUETOOTHMAC')).toBe(true);
+      });
+
+      it('should not match non-MAC address properties', () => {
+        expect(macAddressPattern.test('email')).toBe(false);
+        expect(macAddressPattern.test('password')).toBe(false);
+        expect(macAddressPattern.test('deviceId')).toBe(false);
+      });
+    });
+
+    describe('biometric filter', () => {
+      const biometricPattern = DEFAULT_FILTERS.biometric.search as RegExp;
+
+      it('should match various biometric identifier property names', () => {
+        expect(biometricPattern.test('biometricId')).toBe(true);
+        expect(biometricPattern.test('fingerprintData')).toBe(true);
+        expect(biometricPattern.test('faceIdTemplate')).toBe(true);
+        expect(biometricPattern.test('irisScan')).toBe(true);
+        expect(biometricPattern.test('retinaScan')).toBe(true);
+        expect(biometricPattern.test('voicePrintSample')).toBe(true);
+        expect(biometricPattern.test('dnaSequence')).toBe(true);
+      });
+
+      it('should be case insensitive', () => {
+        expect(biometricPattern.test('BIOMETRICID')).toBe(true);
+        expect(biometricPattern.test('FingerprintData')).toBe(true);
+        expect(biometricPattern.test('DNASequence')).toBe(true);
+      });
+
+      it('should not match non-biometric properties', () => {
+        expect(biometricPattern.test('email')).toBe(false);
+        expect(biometricPattern.test('password')).toBe(false);
+        expect(biometricPattern.test('address')).toBe(false);
       });
     });
   });
