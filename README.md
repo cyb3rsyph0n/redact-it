@@ -33,7 +33,7 @@ console.log(redacted);
 //   name: 'John Doe',
 //   email: '[REDACTED]',
 //   phoneNumber: '[REDACTED]',
-//   address: '123 Main St'
+//   address: '[REDACTED]'
 // }
 ```
 
@@ -349,7 +349,7 @@ redactIt(data, {
 
 ## Default Filters
 
-The library includes thirteen built-in filters for common PII types:
+The library includes sixteen built-in filters for common PII types:
 
 | Filter           | Pattern Examples                                           | Matches                                                                              |
 | ---------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------ |
@@ -366,6 +366,9 @@ The library includes thirteen built-in filters for common PII types:
 | `taxId`          | `/^.*(tax.*id\|ein\|taxpayer.*id\|federal.*id).*$/i`      | `taxId`, `ein`, `taxpayerId`, `federalId`, `taxNumber`, etc.                        |
 | `medicalRecord`  | `/^.*(medical.*record\|mrn\|patient.*id\|health.*id).*$/i`| `medicalRecord`, `mrn`, `patientId`, `healthId`, `medicalNumber`, etc.              |
 | `nationalId`     | `/^.*(national.*id\|citizen.*id\|personal.*id).*$/i`      | `nationalId`, `citizenId`, `personalId`, `governmentId`, `identityNumber`, etc.     |
+| `address`        | `/^.*((billing\|shipping\|mailing).*address\|address(line)?\d*\|street\|addr(line)?\d*\|apt\|apartment\|suite\|unit\|po.*box).*$/i` | `address`, `billingAddress`, `shippingAddress`, `addressLine1`, `streetAddress`, `aptNumber`, `poBox`, etc. |
+| `postalCode`     | `/^.*((postal\|post).*(code\|zip)\|zip(?=(Code\|Postal\|Plus4\|PlusFour\|Id\|[_-]\|$\|\d))\|zipcode).*$/i` | `zip`, `zipCode`, `postalCode`, `postCode`, `zip_plus4`, `zipPostal`, etc.           |
+| `securityAnswer` | `/^.*(security.*question\|security.*answer\|secret.*question\|secret.*answer\|mother.*maiden.*name).*$/i` | `securityQuestion`, `securityAnswer`, `secretQuestion`, `secretAnswer`, `motherMaidenName`, etc. |
 
 All filters are case-insensitive and match property names containing the specified patterns.
 

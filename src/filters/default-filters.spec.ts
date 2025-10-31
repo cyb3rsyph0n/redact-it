@@ -10,7 +10,7 @@ describe('Default Filters', () => {
     it('should return an array of default filter configurations', () => {
       const filters = getDefaultFilters();
       expect(Array.isArray(filters)).toBe(true);
-      expect(filters).toHaveLength(13);
+      expect(filters).toHaveLength(16);
 
       // Check that all filters have the required properties
       filters.forEach(filter => {
@@ -123,6 +123,9 @@ describe('Default Filters', () => {
       expect(isDefaultFilterName('taxId')).toBe(true);
       expect(isDefaultFilterName('medicalRecord')).toBe(true);
       expect(isDefaultFilterName('nationalId')).toBe(true);
+      expect(isDefaultFilterName('address')).toBe(true);
+      expect(isDefaultFilterName('postalCode')).toBe(true);
+      expect(isDefaultFilterName('securityAnswer')).toBe(true);
     });
 
     it('should return false for invalid filter names', () => {
@@ -464,6 +467,82 @@ describe('Default Filters', () => {
         expect(nationalIdPattern.test('email')).toBe(false);
         expect(nationalIdPattern.test('name')).toBe(false);
         expect(nationalIdPattern.test('address')).toBe(false);
+      });
+    });
+
+    describe('address filter', () => {
+      const addressPattern = DEFAULT_FILTERS.address.search as RegExp;
+
+      it('should match various address property names', () => {
+        expect(addressPattern.test('address')).toBe(true);
+        expect(addressPattern.test('billingAddress')).toBe(true);
+        expect(addressPattern.test('shippingAddress')).toBe(true);
+        expect(addressPattern.test('addressLine1')).toBe(true);
+        expect(addressPattern.test('streetAddress')).toBe(true);
+        expect(addressPattern.test('aptNumber')).toBe(true);
+        expect(addressPattern.test('poBox')).toBe(true);
+      });
+
+      it('should be case insensitive', () => {
+        expect(addressPattern.test('ADDRESS')).toBe(true);
+        expect(addressPattern.test('AddressLine2')).toBe(true);
+        expect(addressPattern.test('BILLINGADDRESS')).toBe(true);
+      });
+
+      it('should not match non-address properties', () => {
+        expect(addressPattern.test('email')).toBe(false);
+        expect(addressPattern.test('phone')).toBe(false);
+        expect(addressPattern.test('username')).toBe(false);
+      });
+    });
+
+    describe('postalCode filter', () => {
+      const postalCodePattern = DEFAULT_FILTERS.postalCode.search as RegExp;
+
+      it('should match various postal code property names', () => {
+        expect(postalCodePattern.test('zip')).toBe(true);
+        expect(postalCodePattern.test('zipCode')).toBe(true);
+        expect(postalCodePattern.test('zipcode')).toBe(true);
+        expect(postalCodePattern.test('postalCode')).toBe(true);
+        expect(postalCodePattern.test('postCode')).toBe(true);
+        expect(postalCodePattern.test('zip_plus4')).toBe(true);
+        expect(postalCodePattern.test('zipPostal')).toBe(true);
+      });
+
+      it('should be case insensitive', () => {
+        expect(postalCodePattern.test('ZIP')).toBe(true);
+        expect(postalCodePattern.test('ZipCode')).toBe(true);
+        expect(postalCodePattern.test('POSTALCODE')).toBe(true);
+      });
+
+      it('should not match non-postal properties', () => {
+        expect(postalCodePattern.test('zipper')).toBe(false);
+        expect(postalCodePattern.test('zipFile')).toBe(false);
+        expect(postalCodePattern.test('email')).toBe(false);
+      });
+    });
+
+    describe('securityAnswer filter', () => {
+      const securityAnswerPattern = DEFAULT_FILTERS.securityAnswer.search as RegExp;
+
+      it('should match various security question property names', () => {
+        expect(securityAnswerPattern.test('securityQuestion')).toBe(true);
+        expect(securityAnswerPattern.test('securityAnswer')).toBe(true);
+        expect(securityAnswerPattern.test('secretQuestion')).toBe(true);
+        expect(securityAnswerPattern.test('secretAnswer')).toBe(true);
+        expect(securityAnswerPattern.test('motherMaidenName')).toBe(true);
+      });
+
+      it('should be case insensitive', () => {
+        expect(securityAnswerPattern.test('SECURITYQUESTION')).toBe(true);
+        expect(securityAnswerPattern.test('SecurityAnswer')).toBe(true);
+        expect(securityAnswerPattern.test('SECRETQUESTION')).toBe(true);
+      });
+
+      it('should not match non-security properties', () => {
+        expect(securityAnswerPattern.test('email')).toBe(false);
+        expect(securityAnswerPattern.test('password')).toBe(false);
+        expect(securityAnswerPattern.test('address')).toBe(false);
       });
     });
   });
