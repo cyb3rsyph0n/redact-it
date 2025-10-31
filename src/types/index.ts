@@ -30,9 +30,9 @@ export type RedactableInput = Record<string, any> | Record<string, any>[];
 /**
  * Built-in filter names
  */
-export type DefaultFilterName = 
-  | 'email' 
-  | 'phone' 
+export type DefaultFilterName =
+  | 'email'
+  | 'phone'
   | 'ssn'
   | 'creditCard'
   | 'driverLicense'
@@ -43,7 +43,10 @@ export type DefaultFilterName =
   | 'dateOfBirth'
   | 'taxId'
   | 'medicalRecord'
-  | 'nationalId';
+  | 'nationalId'
+  | 'address'
+  | 'postalCode'
+  | 'securityAnswer';
 
 /**
  * Internal representation of a compiled filter

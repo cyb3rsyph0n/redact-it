@@ -19,7 +19,7 @@ describe('redactIt', () => {
         email: '[REDACTED]',
         phoneNumber: '[REDACTED]',
         ssn: '[REDACTED]',
-        address: '123 Main St',
+        address: '[REDACTED]',
       });
     });
 
@@ -56,6 +56,30 @@ describe('redactIt', () => {
     it('should handle empty objects and arrays', () => {
       expect(redactIt({})).toEqual({});
       expect(redactIt([])).toEqual([]);
+    });
+
+    it('should redact address, postal code, and security answers', () => {
+      const input = {
+        addressLine1: '123 Main St',
+        zipCode: '12345',
+        postalCode: '12345-6789',
+        securityQuestion: "What is your pet's name?",
+        securityAnswer: 'Fluffy',
+        motherMaidenName: 'Smith',
+        shippingAddress: '234 Side Ave',
+      };
+
+      const result = redactIt(input);
+
+      expect(result).toEqual({
+        addressLine1: '[REDACTED]',
+        zipCode: '[REDACTED]',
+        postalCode: '[REDACTED]',
+        securityQuestion: '[REDACTED]',
+        securityAnswer: '[REDACTED]',
+        motherMaidenName: '[REDACTED]',
+        shippingAddress: '[REDACTED]',
+      });
     });
   });
 

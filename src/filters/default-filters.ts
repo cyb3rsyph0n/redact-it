@@ -56,6 +56,30 @@ export const DEFAULT_FILTERS: Record<DefaultFilterName, FilterConfig> = {
     search: /^.*(national.*id|citizen.*id|personal.*id|government.*id|identity.*number).*$/i,
     replace: '[REDACTED]',
   },
+  /**
+   * Matches address-like property names: billing/shipping/mailing variants,
+   * address line aliases (address, addressLine1, addr2), street descriptors,
+   * and unit identifiers (apt, suite, PO boxes).
+   */
+  address: {
+    search:
+      /^.*((billing|shipping|mailing).*address|address(line)?\d*|street|addr(line)?\d*|apt|apartment|suite|unit|po.*box).*$/i,
+    replace: '[REDACTED]',
+  },
+  /**
+   * Matches postal/zip code property names, including mixed casing, suffixes
+   * like zipCode/zip_plus4, and standalone zip when followed by an identifier.
+   */
+  postalCode: {
+    search:
+      /^.*((postal|post).*(code|zip)|zip(?=(Code|Postal|Plus4|PlusFour|Id|[_-]|$|\d))|zipcode).*$/i,
+    replace: '[REDACTED]',
+  },
+  securityAnswer: {
+    search:
+      /^.*(security.*question|security.*answer|secret.*question|secret.*answer|mother.*maiden.*name).*$/i,
+    replace: '[REDACTED]',
+  },
 };
 
 /**
